@@ -65,7 +65,7 @@ namespace OnlineMenu.API.Controllers
 
             response.Headers.Add("Content-Type", "text/event-stream");
             response.Headers.Add("Cache-Control", "no-cache");
-            NotifyCollectionChangedEventHandler onMessageCreated = async (sender, eventArgs) =>
+            NotifyCollectionChangedEventHandler onOrderCreated = async (sender, eventArgs) =>
             {
                 try
                 {
@@ -80,21 +80,23 @@ namespace OnlineMenu.API.Controllers
                     // TODO: log error
                 }
             };
-            Orders.CollectionChanged += onMessageCreated;
+            Orders.CollectionChanged += onOrderCreated;
 
             while (!cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(1000);
             }
 
-            Orders.CollectionChanged -= onMessageCreated;
+            Orders.CollectionChanged -= onOrderCreated;
         }
 
         static List<Product> Menu = new List<Product> {
             new Product { Id = 1, Name =  "Pizza", Price = 80},
             new Product { Id = 2, Name = "Fench fries", Price = 30 },
             new Product { Id = 3, Name = "Water", Price = 20},
-            new Product { Id = 4, Name = "Juse", Price = 30}
+            new Product { Id = 4, Name = "Juse", Price = 30},
+            new Product { Id = 5, Name = "Pizde", Price = 30}
+
         };
         static int OrderId = 0;
         static ObservableCollection<Order> Orders = new ObservableCollection<Order>();
